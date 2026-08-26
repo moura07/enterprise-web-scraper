@@ -88,6 +88,8 @@ class BooksToScrape:
         """
         logger.info("Fetching page: %s", url)
 
+        
+
         try:
             response = self.session.get(
                 url,
@@ -95,6 +97,10 @@ class BooksToScrape:
             )
 
             response.raise_for_status()
+
+            # The website uses UTF-8, but requests defaults to ISO-8859-1 
+            # if charset is not specified in the Content-Type header.
+            response.encoding = "utf-8"
 
             logger.info(
                 "Page fetched successfully | status=%s | url=%s",
