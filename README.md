@@ -54,5 +54,5 @@ and observable execution through structured logging.
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/<your-username>/enterprise-web-scraper.git
+git clone https://github.com/moura07/enterprise-web-scraper
 cd enterprise-web-scraper
