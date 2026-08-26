@@ -1,5 +1,9 @@
 # Enterprise Web Scraper & Data Extractor
 
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![Managed with: uv](https://img.shields.io/badge/Managed%20with-uv-de5d43?style=flat-square)](https://github.com/astral-sh/uv)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
+
 A production-ready Python web scraping pipeline designed to showcase reliable data extraction, defensive HTML parsing, structured logging, and multi-format data delivery.
 
 The project scrapes the public test website [Books to Scrape](http://books.toscrape.com/) to demonstrate a complete, end-to-end extraction workflow, saving normalized data into CSV and JSON formats.
@@ -23,11 +27,11 @@ The project scrapes the public test website [Books to Scrape](http://books.toscr
 
 | Technology | Purpose |
 | :--- | :--- |
-| **Python 3.10+** | Core application logic |
-| **`uv`** | Fast dependency and virtual environment management |
-| **Requests** | Robust HTTP client execution with session reuse |
-| **BeautifulSoup 4** | Defensive HTML DOM parsing |
-| **Pandas** | CSV processing and structured dataset export |
+| ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white) | Core application logic |
+| ![uv](https://img.shields.io/badge/uv-de5d43?style=flat-square) | Dependency and virtual environment management |
+| ![Requests](https://img.shields.io/badge/Requests-2C8EBB?style=flat-square) | Robust HTTP client execution with session reuse |
+| ![BeautifulSoup 4](https://img.shields.io/badge/BeautifulSoup_4-008080?style=flat-square) | Defensive HTML DOM parsing |
+| ![Pandas](https://img.shields.io/badge/Pandas-150458?style=flat-square&logo=pandas&logoColor=white) | CSV processing and structured dataset export |
 
 ---
 
