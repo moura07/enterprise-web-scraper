@@ -40,7 +40,7 @@ The project scrapes the public test website [Books to Scrape](http://books.toscr
 The scraper follows a structured ingestion pipeline:
 
 ```mermaid
-graph LR
+graph TD
     subgraph Ingestion ["1. Ingestion Stage"]
         A["HTTP Source: Books to Scrape"]
         B["Requests Session"]
