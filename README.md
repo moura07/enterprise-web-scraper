@@ -1,37 +1,21 @@
 # Enterprise Web Scraper & Data Extractor
 
-A production-oriented Python web scraping pipeline designed to demonstrate
-reliable data extraction, defensive parsing, structured logging, and
-multi-format data delivery.
+A production-oriented Python web scraping pipeline designed to demonstrate reliable data extraction, defensive parsing, structured logging, and multi-format data delivery.
 
-The project uses the public test website
-[Books to Scrape](http://books.toscrape.com/) as its source and extracts
-book metadata into reusable CSV and JSON datasets.
+The project uses the public test website [Books to Scrape](http://books.toscrape.com/) as its source to demonstrate an end-to-end data extraction workflow into normalized CSV and JSON datasets.
 
-Although intentionally lightweight, the architecture follows principles
-commonly applied to enterprise data ingestion workloads: separation of
-concerns, typed data models, fault tolerance, deterministic output paths,
-and observable execution through structured logging.
+> **Need custom web scraping or data pipeline solutions?**  
+> I build resilient, automated data extraction engines tailored to business requirements (e-commerce, real estate, financial data, and market research).  
+>  **Contact for Freelance / Contracts:** [matheusmourabr1@gmail.com] | [LinkedIn Profile](https://www.linkedin.com/in/matheus-moura-543180306/) / [Upwork Profile](https://www.upwork.com/freelancers/~015a096ee372c9e094?mp_source=share)]
 
 ---
 
 ## Key Features
 
-- Object-oriented Python architecture
-- Python 3.10+ with full type hinting
-- HTTP requests with configurable timeout handling
-- HTTP status validation using `raise_for_status()`
-- Network and request exception handling
-- Defensive HTML parsing with BeautifulSoup
-- Fallback values for missing HTML elements
-- Automatic pagination across all available pages
-- Standard Python `logging` implementation
-- No `print()` statements
-- Normalized book data model using `dataclass`
-- CSV export using Pandas
-- JSON export using Python's standard `json` library
-- Automatic creation of the `data/` directory
-- Reusable scraper class suitable for future extension
+- **Robust Error Handling:** Timeout management, HTTP error handling, and graceful fallback values for missing attributes.
+- **Enterprise Design Patterns:** Object-oriented architecture, typed data models (`dataclasses`), and structural logging (zero `print` debugging).
+- **Automated Pagination:** Dynamic page navigation and deterministic dataset generation.
+- **Modern Package Management:** Built and managed with `uv` for high-performance dependency isolation.
 
 ---
 
@@ -39,20 +23,26 @@ and observable execution through structured logging.
 
 | Technology | Purpose |
 |---|---|
-| Python 3.10+ | Core application |
-| Requests | HTTP communication |
-| BeautifulSoup 4 | HTML parsing |
-| Pandas | CSV data processing and export |
-| JSON | Structured data export |
-| Logging | Observability and error reporting |
-| Dataclasses | Typed domain model |
+| Python 3.10+ | Core application logic |
+| `uv` | Dependency and virtual environment management |
+| Requests | Robust HTTP client execution |
+| BeautifulSoup 4 | Defensive HTML DOM parsing |
+| Pandas | CSV processing and structured dataset export |
 
 ---
 
-## Installation
+## Quick Start (Local Setup)
 
-### 1. Clone the repository
+### Prerequisites
+- Python 3.10+
+- [`uv`](https://github.com/astral-sh/uv) installed
+
+### Execution
 
 ```bash
-git clone https://github.com/moura07/enterprise-web-scraper
+# 1. Clone repository
+git clone [https://github.com/moura07/enterprise-web-scraper.git](https://github.com/moura07/enterprise-web-scraper.git)
 cd enterprise-web-scraper
+
+# 2. Sync environment & run pipeline via uv
+uv run python src/scraper.py
