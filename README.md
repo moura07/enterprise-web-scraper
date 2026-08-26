@@ -10,7 +10,7 @@ The project scrapes the public test website [Books to Scrape](http://books.toscr
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 - **Robust Error Handling:** Timeout management, HTTP error handling, and graceful fallback values for missing attributes.
 - **Enterprise Design Patterns:** Object-oriented architecture, typed data models (`dataclasses`), and structural logging (no `print` debugging).
@@ -19,7 +19,7 @@ The project scrapes the public test website [Books to Scrape](http://books.toscr
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Technology | Purpose |
 | :--- | :--- |
@@ -31,23 +31,55 @@ The project scrapes the public test website [Books to Scrape](http://books.toscr
 
 ---
 
-## 📐 Design & Architecture
+## Design & Architecture
 
 The scraper follows a structured ingestion pipeline:
 
 ```mermaid
-graph TD
-    A[HTTP Source: Books to Scrape] -->|GET Request| B(Requests Session)
-    B -->|HTTP Status Check| C{Valid Response?}
-    C -->|No| D[Log Error / Halt Pagination]
-    C -->|Yes: UTF-8 Encoding| E(BeautifulSoup Parser)
-    E -->|Defensive Extraction| F(Typed Book Model)
-    F -->|Export| G[CSV Output]
-    F -->|Export| H[JSON Output]
+graph LR
+    subgraph Ingestion ["1. Ingestion Stage"]
+        A["HTTP Source: Books to Scrape"]
+        B["Requests Session"]
+        C{"Valid Response?"}
+        D["Log Error & Halt"]
+    end
 
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style G fill:#bbf,stroke:#333,stroke-width:2px
-    style H fill:#bbf,stroke:#333,stroke-width:2px
+    subgraph Processing ["2. Processing Stage"]
+        E["BeautifulSoup Parser (UTF-8 Encoding)"]
+        F["Typed Book Model (Dataclass)"]
+    end
+
+    subgraph Delivery ["3. Delivery Stage"]
+        G["CSV Output"]
+        H["JSON Output"]
+    end
+
+    %% Flow / Connections
+    A -->|GET Request| B
+    B -->|HTTP Status Check| C
+    C -->|No| D
+    C -->|Yes| E
+    E -->|Defensive Extraction| F
+    F -->|Export| G
+    F -->|Export| H
+
+    %% Node Styling (High Contrast & Modern Palette)
+    classDef source fill:#1e3a8a,stroke:#3b82f6,stroke-width:2px,color:#ffffff;
+    classDef process fill:#374151,stroke:#4b5563,stroke-width:2px,color:#ffffff;
+    classDef decision fill:#1f2937,stroke:#9ca3af,stroke-width:2px,color:#ffffff;
+    classDef error fill:#991b1b,stroke:#ef4444,stroke-width:2px,color:#ffffff;
+    classDef output fill:#065f46,stroke:#10b981,stroke-width:2px,color:#ffffff;
+
+    class A source;
+    class B,E,F process;
+    class C decision;
+    class D error;
+    class G,H output;
+
+    %% Subgraph Styling (Subtle & Dark-Theme Friendly)
+    style Ingestion fill:none,stroke:#4b5563,stroke-width:1px,stroke-dasharray: 5 5;
+    style Processing fill:none,stroke:#4b5563,stroke-width:1px,stroke-dasharray: 5 5;
+    style Delivery fill:none,stroke:#4b5563,stroke-width:1px,stroke-dasharray: 5 5;
 ```
 
 The implementation intentionally keeps extraction, transformation, and delivery responsibilities separated (Separation of Concerns). This makes the project highly extensible.
@@ -64,7 +96,7 @@ The implementation intentionally keeps extraction, transformation, and delivery 
 
 ---
 
-## 🛡️ Error Handling & Resiliency
+## Error Handling & Resiliency
 
 The scraper is designed to be resilient and fail gracefully under typical scraping hazards:
 
@@ -78,7 +110,7 @@ The scraper is designed to be resilient and fail gracefully under typical scrapi
 
 ---
 
-## 📊 Output Schema
+## Output Schema
 
 Each extracted record is structured according to the following schema:
 
@@ -100,7 +132,7 @@ Each extracted record is structured according to the following schema:
 
 ---
 
-## ⚡ Quick Start (Local Setup)
+## Quick Start (Local Setup)
 
 ### Prerequisites
 - Python 3.10+
