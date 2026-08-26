@@ -1,109 +1,94 @@
 # Enterprise Web Scraper & Data Extractor
 
-A production-oriented Python web scraping pipeline designed to demonstrate reliable data extraction, defensive parsing, structured logging, and multi-format data delivery.
+A production-ready Python web scraping pipeline designed to showcase reliable data extraction, defensive HTML parsing, structured logging, and multi-format data delivery.
 
-The project uses the public test website [Books to Scrape](http://books.toscrape.com/) as its source to demonstrate an end-to-end data extraction workflow into normalized CSV and JSON datasets.
+The project scrapes the public test website [Books to Scrape](http://books.toscrape.com/) to demonstrate a complete, end-to-end extraction workflow, saving normalized data into CSV and JSON formats.
 
-> **Need custom web scraping or data pipeline solutions?**  
-> I build resilient, automated data extraction engines tailored to business requirements (e-commerce, real estate, financial data, and market research).  
->  **Contact for Freelance / Contracts:** [matheusmourabr1@gmail.com] | [LinkedIn Profile](https://www.linkedin.com/in/matheus-moura-543180306/) / [Upwork Profile](https://www.upwork.com/freelancers/~015a096ee372c9e094?mp_source=share)]
+> 💼 **Need custom web scraping or data pipeline solutions?**  
+> I build resilient, automated data extraction engines tailored to business requirements (e-commerce, real estate, financial data, market research, and more).  
+> **Contact for Freelance / Contracts:** [matheusmourabr1@gmail.com](mailto:matheusmourabr1@gmail.com) | [LinkedIn](https://www.linkedin.com/in/matheus-moura-543180306/) | [Upwork](https://www.upwork.com/freelancers/~015a096ee372c9e094?mp_source=share)
 
 ---
 
-## Key Features
+## 🚀 Key Features
 
 - **Robust Error Handling:** Timeout management, HTTP error handling, and graceful fallback values for missing attributes.
-- **Enterprise Design Patterns:** Object-oriented architecture, typed data models (`dataclasses`), and structural logging (zero `print` debugging).
-- **Automated Pagination:** Dynamic page navigation and deterministic dataset generation.
+- **Enterprise Design Patterns:** Object-oriented architecture, typed data models (`dataclasses`), and structural logging (no `print` debugging).
+- **Automated Pagination:** Dynamic page navigation across all 50 pages with deterministic dataset generation.
 - **Modern Package Management:** Built and managed with `uv` for high-performance dependency isolation.
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 | Technology | Purpose |
-|---|---|
-| Python 3.10+ | Core application logic |
-| `uv` | Dependency and virtual environment management |
-| Requests | Robust HTTP client execution |
-| BeautifulSoup 4 | Defensive HTML DOM parsing |
-| Pandas | CSV processing and structured dataset export |
+| :--- | :--- |
+| **Python 3.10+** | Core application logic |
+| **`uv`** | Fast dependency and virtual environment management |
+| **Requests** | Robust HTTP client execution with session reuse |
+| **BeautifulSoup 4** | Defensive HTML DOM parsing |
+| **Pandas** | CSV processing and structured dataset export |
 
 ---
 
-## Design Approach
+## 📐 Design & Architecture
 
-The scraper follows a simple ingestion pipeline:
+The scraper follows a structured ingestion pipeline:
 
-```text
-HTTP Source
-     │
-     ▼
-Requests Session
-     │
-     ▼
-HTTP Validation
-     │
-     ▼
-BeautifulSoup Parser
-     │
-     ▼
-Typed Book Model
-     │
-     ├──────────────► CSV
-     │
-     └──────────────► JSON
+```mermaid
+graph TD
+    A[HTTP Source: Books to Scrape] -->|GET Request| B(Requests Session)
+    B -->|HTTP Status Check| C{Valid Response?}
+    C -->|No| D[Log Error / Halt Pagination]
+    C -->|Yes: UTF-8 Encoding| E(BeautifulSoup Parser)
+    E -->|Defensive Extraction| F(Typed Book Model)
+    F -->|Export| G[CSV Output]
+    F -->|Export| H[JSON Output]
 
----
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style G fill:#bbf,stroke:#333,stroke-width:2px
+    style H fill:#bbf,stroke:#333,stroke-width:2px
+```
 
-The implementation intentionally keeps extraction, transformation, and delivery responsibilities separated. This makes the project easier to extend with additional capabilities such as:
+The implementation intentionally keeps extraction, transformation, and delivery responsibilities separated (Separation of Concerns). This makes the project highly extensible.
 
-- Retry policies
-- Rate limiting
-- Proxy support
-- Data validation
-- Database persistence
-- Cloud object storage
-- Incremental extraction
-- Unit and integration tests
-- Airflow or Databricks orchestration
-- API-based downstream integrations
+### Future Extensibility Opportunities:
+- Retry policies (e.g., using `tenacity` or custom session mounting)
+- Rate limiting and random delays (anti-scraping bypass)
+- Proxy integration and User-Agent rotation
+- Schema validation (e.g., using `pydantic`)
+- Database persistence (PostgreSQL, SQLite, etc.)
+- Cloud storage uploads (AWS S3, GCP Cloud Storage)
+- Unit and integration testing with `pytest`
+- Orchestration via Apache Airflow, Prefect, or cron jobs
 
 ---
 
-## Error Handling
+## 🛡️ Error Handling & Resiliency
 
-The scraper is designed to fail gracefully. The following conditions are explicitly handled:
+The scraper is designed to be resilient and fail gracefully under typical scraping hazards:
 
-- Request timeouts
-- HTTP errors
-- Connection failures
-- Missing HTML elements
-- Empty pages
-- Unexpected parsing errors
-- Output directory absence
-
-When an individual HTML element is missing, the scraper uses fallback values instead of terminating the pipeline. For example:
-
-- Missing title       -> `Unknown Title`
-- Missing price       -> `Unknown Price`
-- Missing availability -> `no`
-
-Page-level network failures are logged and stop further pagination without discarding records that were already successfully extracted.
+- **Network Faults:** Connection failures and timeouts are caught, logged, and handled.
+- **Graceful Degradation:** Page-level network failures halt the pagination loop gracefully without discarding already scraped data.
+- **Defensive Parsing:** If individual attributes are missing or structured differently, fallback values are utilized instead of throwing exceptions:
+  - Missing title: `"Unknown Title"`
+  - Missing price: `"Unknown Price"`
+  - Missing availability: `"no"`
+- **Directory Verification:** Automatically checks and creates target output folders before writing files.
 
 ---
 
-## Output Schema
+## 📊 Output Schema
 
-Each extracted record contains the following fields:
+Each extracted record is structured according to the following schema:
 
 | Field | Type | Description |
-|---|---|---|
-| `title` | string | Book title |
-| `price` | string | Book price as displayed by the source |
-| `availability` | string | `yes` when the book is in stock, otherwise `no` |
+| :--- | :--- | :--- |
+| `title` | string | Full title of the book |
+| `price` | string | Book price, correctly decoded with currency symbol (e.g., `£51.77`) |
+| `availability` | string | `yes` if in stock, otherwise `no` |
 
-### Example Record:
+### Example JSON Record:
 
 ```json
 {
@@ -111,20 +96,23 @@ Each extracted record contains the following fields:
     "price": "£51.77",
     "availability": "yes"
 }
+```
 
 ---
-## Quick Start (Local Setup)
+
+## ⚡ Quick Start (Local Setup)
 
 ### Prerequisites
 - Python 3.10+
 - [`uv`](https://github.com/astral-sh/uv) installed
 
-### Execution
+### Running the Pipeline
 
 ```bash
-# 1. Clone repository
-git clone [https://github.com/moura07/enterprise-web-scraper.git](https://github.com/moura07/enterprise-web-scraper.git)
+# 1. Clone the repository
+git clone https://github.com/moura07/enterprise-web-scraper.git
 cd enterprise-web-scraper
 
-# 2. Sync environment & run pipeline via uv
+# 2. Run the pipeline (uv will automatically bootstrap the virtual environment)
 uv run python src/scraper.py
+```
