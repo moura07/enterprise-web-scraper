@@ -31,6 +31,88 @@ The project uses the public test website [Books to Scrape](http://books.toscrape
 
 ---
 
+## Design Approach
+
+The scraper follows a simple ingestion pipeline:
+
+```text
+HTTP Source
+     │
+     ▼
+Requests Session
+     │
+     ▼
+HTTP Validation
+     │
+     ▼
+BeautifulSoup Parser
+     │
+     ▼
+Typed Book Model
+     │
+     ├──────────────► CSV
+     │
+     └──────────────► JSON
+
+---
+
+The implementation intentionally keeps extraction, transformation, and delivery responsibilities separated. This makes the project easier to extend with additional capabilities such as:
+
+- Retry policies
+- Rate limiting
+- Proxy support
+- Data validation
+- Database persistence
+- Cloud object storage
+- Incremental extraction
+- Unit and integration tests
+- Airflow or Databricks orchestration
+- API-based downstream integrations
+
+---
+
+## Error Handling
+
+The scraper is designed to fail gracefully. The following conditions are explicitly handled:
+
+- Request timeouts
+- HTTP errors
+- Connection failures
+- Missing HTML elements
+- Empty pages
+- Unexpected parsing errors
+- Output directory absence
+
+When an individual HTML element is missing, the scraper uses fallback values instead of terminating the pipeline. For example:
+
+- Missing title       -> `Unknown Title`
+- Missing price       -> `Unknown Price`
+- Missing availability -> `no`
+
+Page-level network failures are logged and stop further pagination without discarding records that were already successfully extracted.
+
+---
+
+## Output Schema
+
+Each extracted record contains the following fields:
+
+| Field | Type | Description |
+|---|---|---|
+| `title` | string | Book title |
+| `price` | string | Book price as displayed by the source |
+| `availability` | string | `yes` when the book is in stock, otherwise `no` |
+
+### Example Record:
+
+```json
+{
+    "title": "A Light in the Attic",
+    "price": "£51.77",
+    "availability": "yes"
+}
+
+---
 ## Quick Start (Local Setup)
 
 ### Prerequisites
