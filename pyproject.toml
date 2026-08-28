@@ -30,3 +30,9 @@ dev = [
     "pytest-mock>=3.14",
     "responses>=0.25",
 ]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
+[tool.pyright]
+extraPaths = ["."]

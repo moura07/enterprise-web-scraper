@@ -22,6 +22,7 @@ import pytest
 import responses as resp_mock
 
 from enterprise_web_scraper.pipeline import ScraperPipeline
+from conftest import CATALOGUE_PAGE_HTML, EMPTY_PAGE_HTML, LAST_PAGE_HTML
 from tests.conftest import CATALOGUE_PAGE_HTML, EMPTY_PAGE_HTML, LAST_PAGE_HTML
 
 BASE = "http://books.toscrape.com/"
