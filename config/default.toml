@@ -1,0 +1,43 @@
+# ---------------------------------------------------------------------------
+# Enterprise Web Scraper — Default Configuration
+# ---------------------------------------------------------------------------
+# All values can be overridden via environment variables using the
+# SCRAPER_ prefix (e.g. SCRAPER_BASE_URL, SCRAPER_TIMEOUT).
+# ---------------------------------------------------------------------------
+
+[scraper]
+# Target website entry point.
+base_url = "http://books.toscrape.com/"
+
+# HTTP request timeout in seconds.
+timeout = 10
+
+# Maximum number of pages to scrape. 0 = no limit (scrape all pages).
+max_pages = 0
+
+# Polite delay between consecutive page requests, in seconds.
+delay_between_requests = 0.5
+
+[retry]
+# Maximum number of fetch attempts per URL (initial attempt + retries).
+max_attempts = 3
+
+# Exponential backoff bounds in seconds.
+wait_min = 1.0
+wait_max = 10.0
+
+# Apply random jitter to backoff to avoid thundering herd.
+jitter = true
+
+# HTTP status codes that trigger a retry.
+retry_on_status = [429, 500, 502, 503, 504]
+
+[output]
+# Directory where output files are saved (relative to project root).
+data_dir = "data"
+
+# Export formats to produce. Valid values: "csv", "json", "sqlite".
+formats = ["csv", "json", "sqlite"]
+
+# SQLite database path (relative to project root).
+sqlite_db = "data/books.db"
