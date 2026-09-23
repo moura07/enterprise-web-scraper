@@ -112,30 +112,6 @@ graph TD
 
 ---
 
-## Quick Start
-
-### Prerequisites
-- Python 3.11+
-- [`uv`](https://github.com/astral-sh/uv) installed
-
-### Running the Pipeline
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/moura07/enterprise-web-scraper.git
-cd enterprise-web-scraper
-
-# 2. Install dependencies
-uv sync
-
-# 3. Run with defaults (all 50 pages → CSV + JSON + SQLite)
-uv run scrape
-
-# 4. Or limit to 5 pages and only CSV output
-uv run scrape --max-pages 5 --formats csv
-```
-
----
 
 ## CLI Reference
 
